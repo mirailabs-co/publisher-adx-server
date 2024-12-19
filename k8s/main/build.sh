@@ -1,0 +1,2 @@
+docker build --build-arg TOKEN=$TOKEN --build-arg NPM_TOKEN=$PACKAGE_TOKEN -t registry.gitlab.com/viettd93/pegaxy-images/rewards-hq-api .
+docker push registry.gitlab.com/viettd93/pegaxy-images/rewards-hq-api

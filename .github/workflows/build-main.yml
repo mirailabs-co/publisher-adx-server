@@ -1,0 +1,33 @@
+name: Build Prod Image
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-image:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/login-action@v1
+        with:
+          registry: registry.gitlab.com
+          username: ${{ secrets.GL_USER }}
+          password: ${{ secrets.GL_PASS }}
+      - name: Install doctl and save DigitalOcean kubeconfig with short-lived credentials
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          kubectl version --client
+          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_ID }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+      - run: |
+          echo -en "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}\n@mirailabs-co:registry=https://npm.pkg.github.com/" > ~/.npmrc
+          npm i -g yarn
+          yarn
+          PACKAGE_TOKEN=${{ secrets.PACKAGE_TOKEN }} yarn build-main
+          yarn restart-main

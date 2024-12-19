@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: rewards-hq-api
+spec:
+    selector:
+        matchLabels:
+            app: rewards-hq-api
+    replicas: 1 # tells deployment to run 2 pods matching the template
+    template:
+        metadata:
+            labels:
+                app: rewards-hq-api
+        spec:
+            containers:
+                - name: rewards-hq-api        
+                  image: registry.gitlab.com/viettd93/pegaxy-images/rewards-hq-api
+                  imagePullPolicy: Always
+                  envFrom:
+                      - secretRef:
+                            name: rewards-hq-api
+                  livenessProbe:
+                      httpGet:
+                          path: /health
+                          port: 3000
+                      initialDelaySeconds: 30
+                      periodSeconds: 3
+                  resources:
+                      limits:
+                          memory: '1000Mi'
+                          cpu: '1'
+                      requests:
+                          memory: '100Mi'
+                          cpu: '0.1'
+            imagePullSecrets:
+                - name: registry-credentials

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: adx-core-api-dev
+spec:
+    selector:
+        matchLabels:
+            app: adx-core-api-dev
+    replicas: 1 # tells deployment to run 2 pods matching the template
+    template:
+        metadata:
+            labels:
+                app: adx-core-api-dev
+        spec:
+            containers:
+                - name: adx-core-api-dev
+                  image: registry.gitlab.com/viettd93/pegaxy-images/adx-core-api-dev
+                  imagePullPolicy: Always
+                  envFrom:
+                      - secretRef:
+                            name: adx-core-api-dev
+                  livenessProbe:
+                      httpGet:
+                          path: /health
+                          port: 3000
+                      initialDelaySeconds: 30
+                      periodSeconds: 3
+                  resources:
+                      limits:
+                          memory: '1000Mi'
+                          cpu: '1'
+                      requests:
+                          memory: '100Mi'
+                          cpu: '0.1'
+            imagePullSecrets:
+                - name: registry-credentials
