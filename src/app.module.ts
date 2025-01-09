@@ -16,15 +16,8 @@ import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './module/users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { UserAttributesModule } from './module/user-attributes/user-attributes.module';
-import { AttributesModule } from './module/attributes/attributes.module';
-import { AdsModule } from './module/ads/ads.module';
-import { AppsModule } from './module/apps/apps.module';
-import { SyncModule } from './module/sync/sync.module';
-import { AppAttributesModule } from './module/app-attributes/app-attributes.module';
-import { QuestsModule } from './module/quests/quests.module';
-import { UserQuestModule } from './module/user-quest/user-quest.module';
-import { QuestAttributesModule } from './module/quest-attributes/quest-attributes.module';
+import { PointLogsModule } from './module/point-logs/point-logs.module';
+import { QuestRewardsModule } from './module/quest-rewards/quest-rewards.module';
 
 @Module({
   imports: [
@@ -76,15 +69,8 @@ import { QuestAttributesModule } from './module/quest-attributes/quest-attribute
     WinstonModule.forRoot(WinstonLogger),
     UsersModule,
     AuthModule,
-    UserAttributesModule,
-    AttributesModule,
-    AdsModule,
-    AppsModule,
-    SyncModule,
-    AppAttributesModule,
-    QuestsModule,
-    UserQuestModule,
-    QuestAttributesModule,
+    PointLogsModule,
+    QuestRewardsModule,
   ],
   controllers: [AppController],
   providers: [

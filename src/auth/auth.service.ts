@@ -31,10 +31,15 @@ export class AuthService {
 
   validateApiKey(apiKey: string) {
     const key: string = this.configService.get('API_KEY');
-    return apiKey == key;
+    return apiKey === key;
   }
 
-  async loginByTelegram(telegramInitData: string, appId: string) {
+  validateAdxApiKey(apiKey: string) {
+    const key: string = this.configService.get('ADX_API_KEY');
+    return apiKey === key;
+  }
+
+  async loginByTelegram(telegramInitData: string) {
     const data = this.parseTelegramInitData(telegramInitData);
     if (!data) {
       throw new UnauthorizedException();
@@ -54,7 +59,6 @@ export class AuthService {
       updatedAt: userData.updatedAt,
       user: userData.user,
       userName: userData.userName,
-      appId,
     };
 
     const accessToken = this.jwtService.sign(signData, {

@@ -10,13 +10,4 @@ export class LoginByTelegramDto {
   @IsString()
   @IsNotEmpty()
   telegramInitData: string;
-
-  @ApiProperty({
-    type: 'string',
-    description: 'The app id',
-    example: 'test',
-  })
-  @IsString()
-  @IsNotEmpty()
-  appId: string;
 }

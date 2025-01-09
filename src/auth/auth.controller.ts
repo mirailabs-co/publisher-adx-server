@@ -25,7 +25,7 @@ export class AuthController {
     description: 'Success',
   })
   async loginByTelegram(@Body() body: LoginByTelegramDto) {
-    return this.authService.loginByTelegram(body.telegramInitData, body.appId);
+    return this.authService.loginByTelegram(body.telegramInitData);
   }
 
   @ApiTags('Auth')

@@ -6,10 +6,19 @@ import { ApiKeyStrategy } from './strategy/api-key.strategy';
 import { ApiKeyGuard } from './guard/api-key.guard';
 import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/module/users/users.module';
+import { AdxApiKeyGuard } from './guard/adx-api-key.guard';
+import { AdxApiKeyStrategy } from './strategy/adx-api-key.strategy';
 
 @Module({
   controllers: [AuthController],
   imports: [JwtModule.register({}), forwardRef(() => UsersModule)],
-  providers: [MiraiIdStrategy, AuthService, ApiKeyStrategy, ApiKeyGuard],
+  providers: [
+    MiraiIdStrategy,
+    AuthService,
+    ApiKeyStrategy,
+    ApiKeyGuard,
+    AdxApiKeyStrategy,
+    AdxApiKeyGuard,
+  ],
 })
 export class AuthModule {}

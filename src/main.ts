@@ -64,6 +64,7 @@ async function bootstrap() {
     .setDescription('Telegram App API description')
     .addBearerAuth(undefined, 'access-token')
     .addApiKey(undefined, 'api-key')
+    .addApiKey(undefined, 'adx-api-key')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
