@@ -1,7 +1,9 @@
-import { Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { PointLogsService } from './point-logs.service';
 import { JWTGuard } from 'src/auth/guard/jwt.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AdxApiKeyGuard } from 'src/auth/guard/adx-api-key.guard';
+import { AdXWebhookDto } from './dtos/AdXWebhook.dto';
 
 @Controller('point-logs')
 export class PointLogsController {
@@ -30,6 +32,18 @@ export class PointLogsController {
       user: userId,
       point: point,
       code: code,
+    });
+  }
+
+  @ApiTags('Adx Webhook')
+  @UseGuards(AdxApiKeyGuard)
+  @ApiBearerAuth('adx-api-key')
+  @Post('adx-webhook')
+  async adxWebhook(@Body() body: AdXWebhookDto) {
+    return this.pointLogsService.createPointLogByAdXWebhook({
+      user: body.telegramUserId,
+      point: 100,
+      adsBlockId: body.adsBlockId,
     });
   }
 }

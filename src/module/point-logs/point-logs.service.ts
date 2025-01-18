@@ -33,6 +33,32 @@ export class PointLogsService {
     return newPointLog;
   }
 
+  async createPointLogByAdXWebhook(data: {
+    user: string;
+    point: number;
+    adsBlockId: string;
+  }) {
+    const checkAlreadyExist = await this.pointLogsModel.findOne({
+      user: data.user,
+      type: PointLogsType.QUEST_REWARD,
+      'metadata.adsBlockId': data.adsBlockId,
+    });
+
+    if (checkAlreadyExist) {
+      return checkAlreadyExist;
+    }
+
+    const newPointLog = await this.pointLogsModel.create({
+      _id: new ObjectId(),
+      user: data.user,
+      point: data.point,
+      type: PointLogsType.QUEST_REWARD,
+      metadata: { adsBlockId: data.adsBlockId },
+    });
+
+    return newPointLog;
+  }
+
   async createPointLogByQuestReward(data: {
     user: string;
     point: number;
